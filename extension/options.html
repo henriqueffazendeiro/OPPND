@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <title>Oppnd – Configurações</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 16px;
+      color: #202124;
+    }
+    h1 {
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+    label {
+      display: block;
+      margin: 12px 0 4px;
+      font-weight: bold;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 6px;
+      font-size: 14px;
+    }
+    button {
+      margin-top: 8px;
+      padding: 6px 12px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .toggle {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 8px;
+    }
+    .privacy {
+      margin-top: 24px;
+      padding: 16px;
+      border: 1px solid #dadce0;
+      border-radius: 6px;
+      background: #f8f9fa;
+    }
+    .status {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #5f6368;
+    }
+  </style>
+</head>
+<body>
+  <h1>Oppnd – Gmail Ticks</h1>
+  <label for="apiBaseUrl">URL base da API</label>
+  <input type="text" id="apiBaseUrl" placeholder="https://api.oppnd.local" />
+
+  <div class="toggle">
+    <input type="checkbox" id="autoPixel" />
+    <label for="autoPixel" style="font-weight: normal; margin: 0;">Adicionar pixel automaticamente</label>
+  </div>
+
+  <label>Chave do utilizador</label>
+  <div style="display:flex; gap: 8px; align-items: center;">
+    <input type="text" id="userHash" readonly style="flex:1;" />
+    <button id="regen">Gerar / Reset</button>
+  </div>
+
+  <div class="status" id="status"></div>
+
+  <div class="privacy">
+    <strong>Privacidade</strong>
+    <p>
+      Oppnd injeta um pixel invisível no envio de e-mails a partir do Gmail para mostrar estados de entrega e leitura.
+      O servidor guarda apenas um hash do remetente e metadados mínimos das mensagens (assunto e timestamps).
+    </p>
+    <p>
+      Pode desativar o pixel a qualquer momento usando a opção acima. Saiba mais em <a href="https://oppnd.example/privacy" target="_blank">Saber Mais</a>.
+    </p>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

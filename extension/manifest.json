@@ -1,0 +1,28 @@
+﻿{
+  "manifest_version": 3,
+  "name": "Oppnd - Gmail Ticks",
+  "description": "Adds real-time status ticks to Gmail sent mail using Oppnd backend.",
+  "version": "0.1.0",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "host_permissions": [
+    "https://mail.google.com/*",
+    "https://api.oppnd.local/*",
+    "http://localhost:3333/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://mail.google.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "options_page": "options.html",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Oppnd - Gmail Ticks"
+  }
+}

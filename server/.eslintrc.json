@@ -1,0 +1,19 @@
+﻿{
+  "env": {
+    "node": true,
+    "es2021": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "prettier"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "sourceType": "module"
+  },
+  "rules": {
+    "import/order": ["error", { "alphabetize": { "order": "asc", "caseInsensitive": true }, "newlines-between": "never" }]
+  }
+}
