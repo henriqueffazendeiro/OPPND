@@ -54,4 +54,27 @@ describe('Oppnd backend routes', () => {
     expect(historyRes.status).toBe(200);
     expect(historyRes.body.messages[0].messageId).toBe('msg-123');
   });
+
+  test('pixel requires delay before marking as read', async () => {
+    const messageId = 'msg-grace';
+    const userHash = 'userhash';
+
+    const firstHit = await request(app).get('/t/pixel').query({ mid: messageId, u: userHash });
+    expect(firstHit.status).toBe(200);
+
+    let stored = await Message.findOne({ messageId, userHash }).lean();
+    expect(stored?.states?.deliveredAt).toBeTruthy();
+    expect(stored?.states?.readAt).toBeFalsy();
+
+    await request(app).get('/t/pixel').query({ mid: messageId, u: userHash });
+    stored = await Message.findOne({ messageId, userHash }).lean();
+    expect(stored?.states?.readAt).toBeFalsy();
+
+    const past = new Date(Date.now() - 120000);
+    await Message.updateOne({ messageId, userHash }, { $set: { 'states.deliveredAt': past } });
+
+    await request(app).get('/t/pixel').query({ mid: messageId, u: userHash });
+    stored = await Message.findOne({ messageId, userHash }).lean();
+    expect(stored?.states?.readAt).toBeTruthy();
+  });
 });

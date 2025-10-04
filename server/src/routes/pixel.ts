@@ -14,6 +14,7 @@ const pixelLimiter = rateLimit({
 });
 
 const PIXEL_BUFFER = Buffer.from('R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==', 'base64');
+const READ_GRACE_PERIOD_MS = 60_000;
 
 router.get('/', pixelLimiter, async (req: Request, res: Response) => {
   const messageId = String(req.query.mid || '');
@@ -39,17 +40,35 @@ router.get('/', pixelLimiter, async (req: Request, res: Response) => {
       });
       emitSseEvent(userHash, buildSsePayload('delivered', created));
     } else {
+      let shouldSave = false;
+
       if (!doc.states.sentAt) {
         doc.states.sentAt = now;
+        shouldSave = true;
       }
+
       if (!doc.states.deliveredAt) {
         doc.states.deliveredAt = now;
         eventType = 'delivered';
+        shouldSave = true;
       } else {
-        doc.states.readAt = now;
-        eventType = 'read';
+        const deliveredAt = doc.states.deliveredAt instanceof Date ? doc.states.deliveredAt : new Date(doc.states.deliveredAt);
+        const elapsed = deliveredAt ? now.getTime() - deliveredAt.getTime() : Number.MAX_SAFE_INTEGER;
+
+        if (!doc.states.readAt && elapsed >= READ_GRACE_PERIOD_MS) {
+          doc.states.readAt = now;
+          eventType = 'read';
+          shouldSave = true;
+        } else {
+          eventType = 'delivered';
+        }
       }
-      await doc.save();
+
+      if (shouldSave) {
+        doc.markModified('states');
+        await doc.save();
+      }
+
       emitSseEvent(userHash, buildSsePayload(eventType ?? 'delivered', doc));
     }
   } catch (error) {
