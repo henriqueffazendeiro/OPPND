@@ -70,7 +70,7 @@ describe('Oppnd backend routes', () => {
     stored = await Message.findOne({ messageId, userHash }).lean();
     expect(stored?.states?.readAt).toBeFalsy();
 
-    const past = new Date(Date.now() - 120000);
+    const past = new Date(Date.now() - 360000);
     await Message.updateOne({ messageId, userHash }, { $set: { 'states.deliveredAt': past } });
 
     await request(app).get('/t/pixel').query({ mid: messageId, u: userHash });
@@ -78,3 +78,4 @@ describe('Oppnd backend routes', () => {
     expect(stored?.states?.readAt).toBeTruthy();
   });
 });
+

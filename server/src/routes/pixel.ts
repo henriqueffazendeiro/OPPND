@@ -14,7 +14,7 @@ const pixelLimiter = rateLimit({
 });
 
 const PIXEL_BUFFER = Buffer.from('R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==', 'base64');
-const READ_GRACE_PERIOD_MS = 60_000;
+const READ_GRACE_PERIOD_MS = 300_000;
 
 router.get('/', pixelLimiter, async (req: Request, res: Response) => {
   const messageId = String(req.query.mid || '');
@@ -82,3 +82,4 @@ router.get('/', pixelLimiter, async (req: Request, res: Response) => {
 });
 
 export default router;
+
