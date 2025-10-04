@@ -356,9 +356,9 @@ function tickSvgForState(state) {
     case 'delivered':
       return doubleTick('#9aa0a6');
     case 'sent':
-      return singleTick('#5f6368');
+      return doubleTick('#dadce0', '#5f6368');
     default:
-      return singleTick('#dadce0');
+      return doubleTick('#dadce0', '#dadce0');
   }
 }
 
@@ -370,11 +370,11 @@ function singleTick(color) {
   `;
 }
 
-function doubleTick(color) {
+function doubleTick(primaryColor, secondaryColor = primaryColor) {
   return `
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="10" viewBox="0 0 18 10">
-      <path d="M1.5 5.5 L4.8 9 L10.5 2.5" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-      <path d="M6.5 5.5 L9.8 9 L15.5 2.5" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M1.5 5.5 L4.8 9 L10.5 2.5" fill="none" stroke="${primaryColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      <path d="M6.5 5.5 L9.8 9 L15.5 2.5" fill="none" stroke="${secondaryColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
   `;
 }
