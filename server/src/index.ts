@@ -31,11 +31,11 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 });
 
 const port = Number(process.env.PORT || 3333);
-const mongoUri = process.env.MONGO_URI;
+const mongoUri = process.env.MONGO_URI || process.env.MONGO_URL || process.env.MONGO_PUBLIC_URL;
 
 async function start() {
   if (!mongoUri) {
-    console.error('[Oppnd] Missing MONGO_URI environment variable');
+    console.error('[Oppnd] Missing Mongo connection string. Define MONGO_URI (or rely on Railway's MONGO_URL)');
     process.exit(1);
   }
 
@@ -58,3 +58,6 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 export default app;
+
+
+

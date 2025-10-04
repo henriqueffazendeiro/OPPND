@@ -1,4 +1,4 @@
-# Oppnd - Gmail Ticks
+﻿# Oppnd - Gmail Ticks
 
 Oppnd adiciona estados de envio, entrega e leitura aos e-mails enviados a partir do Gmail.
 A solucao inclui uma extensao Chrome (Manifest V3) e um backend Node.js/Express com MongoDB e SSE.
@@ -36,11 +36,11 @@ A solucao inclui uma extensao Chrome (Manifest V3) e um backend Node.js/Express 
 cd server
 pnpm install
 cp .env.example .env
-# ajustar MONGO_URI conforme necessario (ou usar memory://oppnd)
+# preencha MONGO_URI se quiser forcar uma URI local (ex.: memory://oppnd)
 pnpm dev
 ```
 
-Se nao tiver MongoDB instalado, defina `MONGO_URI=memory://oppnd` no `.env` e o servidor usa automaticamente uma instancia em memoria.
+Se nao tiver MongoDB instalado, descomente `MONGO_URI=memory://oppnd` no `.env` para usar uma instancia em memoria. No Railway, `MONGO_URL` ja vem definido automaticamente, por isso nao precisa criar `MONGO_URI`.
 
 O servidor arranca em http://localhost:3333 por defeito e expoe os endpoints:
 
@@ -63,7 +63,7 @@ pnpm lint       # ESLint (opcional)
 ```
 
 ## Hospedagem (Railway)
-O backend esta preparado para correr no Railway: `npm start` executa um build previo e o ficheiro `DEPLOYMENT_RAILWAY.md` documenta todos os passos (root directory `server/`, variaveis `MONGO_URI` e `NODE_ENV`, verificacao do dominio publico, etc.).
+O backend esta preparado para correr no Railway: `npm start` executa um build previo e o ficheiro `DEPLOYMENT_RAILWAY.md` documenta todos os passos (root directory `server/`, variaveis `MONGO_URL`/`MONGO_URI` e `NODE_ENV`, verificacao do dominio publico, etc.).
 
 ## Testes
 
@@ -79,3 +79,6 @@ Os testes usam mongodb-memory-server e cobrem utilitarios de ID e o fluxo princi
 - Ligar um dominio personalizado/HTTPS no Railway para a API publica.
 - Implementar autenticacao adicional/assinaturas nos requests da extensao.
 - Adicionar UI extra para gerir mensagens no popup (ex.: limpar historico).
+
+
+
